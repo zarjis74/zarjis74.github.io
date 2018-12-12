@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Instant Chat Bot Service</title>
+  </head>
+  <body >
+
+  	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  	<script type="text/javascript">
+  		var accessToken = "8b5eb20d7fd94bcc834708958c67a468";
+  		var baseUrl = "https://api.api.ai/v1/";
+  		$(document).ready(function() {
+  			$("#input").keypress(function(event) {
+  				if (event.which == 13) {
+  					$('.chatBox').append('<span class="userInput">' + 'me:'+ $('input').val() + '</span><br><br>')
+  					event.preventDefault();
+  					let query  = $('input').val()
+  					$('input').val('')
+  					send(query);
+  				}
+  			});
+  		});
+
+  		function send(query) {
+  			var text = query;
+  			$.ajax({
+  				type: "POST",
+  				url: baseUrl + "query?v=20180101",
+  				contentType: "application/json; charset=utf-8",
+  				dataType: "json",
+  				headers: {
+  					"Authorization": "Bearer " + accessToken
+  				},
+  				data: JSON.stringify({ query: text, lang: "en", sessionId: "somerandomthing" }),
+  				success: function(data) {
+  					setResponse(data);
+  				}
+  			});
+  		}
+  		function setResponse(val) {
+  			$(".chatBox").append('<span class="responseData">'+ 'bot:' + val.result.fulfillment.speech + '</span><br><br>');
+  		}
+  	</script>
+
+
+    <div class = 'decoration'  ><p><h1> Hospital Information Service </h1></p></div>
+
+  	<div class = 'chatBox'><h3 style="color:teal";> Welcome to Hospital Information Service</h3></div>
+      <div class = "box" align="left">
+
+          <input id="input" type="text" align="right" style="width: 370px;margin-top:10px;">
+          <button id="rec" style="margin-top:10px;">send</button>
+      </div>
+
+
+  </body>
+
+
+  <div class="footer">
+  		<p></p>
+	</div>
+
+</html>
+
+
+<style type="text/css">
+.chatBox {
+    padding-left: 1px;
+    margin: 55 920px;
+
+    margin-top: 70px;
+    width: 400px;
+    height: 420px;
+    border: 2px solid black;
+    padding: 10px;
+    Background:#F8F8FF;
+    overflow: auto;
+}
+
+.decoration{
+    text-align: center;
+    color: #4682B4;
+}
+
+.userInput{float: left;}
+.responseData{float:right};
+
+.footer {
+    margin-top:2%;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: black;
+    color: white;
+    text-align: left;
+}
+body {
+  background-image: url("a.jpg");
+  background-size:cover;
+}
+
+
+</style>
